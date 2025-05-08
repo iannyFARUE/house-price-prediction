@@ -38,11 +38,13 @@ class FillMissingValuesStrategy(MissingValueHandlingStrategy):
         logging.info(f"Filling missing values using method: {self.method}")
 
         df_cleaned = df.copy()
+        print("inside copy",df_cleaned.head())
         if self.method == "mean":
             numeric_columns = df_cleaned.select_dtypes(include="number").columns
             df_cleaned[numeric_columns] = df_cleaned[numeric_columns].fillna(
                 df[numeric_columns].mean()
             )
+            print("Inside mean",df_cleaned.head())
         elif self.method == "median":
             numeric_columns = df_cleaned.select_dtypes(include="number").columns
             df_cleaned[numeric_columns] = df_cleaned[numeric_columns].fillna(
@@ -57,6 +59,7 @@ class FillMissingValuesStrategy(MissingValueHandlingStrategy):
             logging.warning(f"Unknown method '{self.method}'. No missing values handled.")
 
         logging.info("Missing values filled.")
+        print("Mean",df_cleaned.head(3))
         return df_cleaned
     
 # Context Class for Handling Missing Values

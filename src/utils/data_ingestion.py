@@ -10,7 +10,7 @@ class DataIngestor(ABC):
         pass
     
 class ZipDataIngestor(DataIngestor):
-    def ingest(self, file_path: str):
+    def ingest(self, file_path: str,filename:str="train.csv"):
         if not file_path.endswith(".zip"):
             raise ValueError("The provided file is not a .zip file")
         
@@ -25,12 +25,13 @@ class ZipDataIngestor(DataIngestor):
         # if len(csv_files) > 1:
         #     raise ValueError("Multiple CSV files found. Please specify which one to use.")
         
-        csv_file_path = os.path.join("extracted_data", csv_files[0])
+        csv_file_path = os.path.join("extracted_data",filename)
+        print("CSV path",csv_file_path)
         df = pd.read_csv(csv_file_path)
-        
+        print("Train data ",df["SalePrice"])
         return df
     
-class DataIngestFactory:
+class DataIngestorFactory:
     @staticmethod
     def get_data_ingestor(file_extension: str) -> DataIngestor:
         if file_extension == ".zip":
@@ -41,6 +42,6 @@ class DataIngestFactory:
 if __name__ == "__main__":
     file_path = os.path.join(os.path.realpath(os.path.dirname(__file__)),"..","data","house-prices-advanced-regression-techniques.zip")
     file_extension = os.path.splitext(file_path)[1]
-    data_ingestor = DataIngestFactory.get_data_ingestor(file_extension)
+    data_ingestor = DataIngestorFactory.get_data_ingestor(file_extension)
     df = data_ingestor.ingest(file_path)
     print(df.head())

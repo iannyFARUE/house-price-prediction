@@ -32,6 +32,7 @@ class LogTransformation(FeatureEngineeringStrategy):
         """
         logging.info(f"Applying log transformation to features: {self.features}")
         df_transformed = df.copy()
+        print(df_transformed.columns)
         for feature in self.features:
             df_transformed[feature] = np.log1p(
                 df[feature]
